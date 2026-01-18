@@ -240,6 +240,78 @@ const Index = () => {
     });
   };
 
+  const checkAchievements = () => {
+    setAchievements(prev => {
+      const updated = prev.map(ach => {
+        if (ach.unlocked) return ach;
+
+        let currentProgress = 0;
+        let shouldUnlock = false;
+
+        // Достижения за задания
+        if (ach.id === '1') currentProgress = tasksCompleted;
+        if (ach.id === '16') currentProgress = tasksCompleted;
+        if (ach.id === '17') currentProgress = tasksCompleted;
+        if (ach.id === '18') currentProgress = tasksCompleted;
+        if (ach.id === '19') currentProgress = tasksCompleted;
+
+        // Достижения за стрик
+        if (ach.id === '2') currentProgress = streak;
+        if (ach.id === '3') currentProgress = streak;
+
+        // Достижения по предметам
+        const bioXP = subjects.find(s => s.name === 'Биология')?.xp || 0;
+        const rusXP = subjects.find(s => s.name === 'Русский')?.xp || 0;
+        const chemXP = subjects.find(s => s.name === 'Химия')?.xp || 0;
+
+        if (ach.id === '4' || ach.id === '5' || ach.id === '6') currentProgress = bioXP;
+        if (ach.id === '7' || ach.id === '8' || ach.id === '9') currentProgress = rusXP;
+        if (ach.id === '10' || ach.id === '11' || ach.id === '12') currentProgress = chemXP;
+
+        // Достижения за вебинары
+        if (ach.id === '13' || ach.id === '14' || ach.id === '15') currentProgress = webinarsWatched;
+
+        // Достижения за пробники
+        if (ach.id === '20' || ach.id === '21' || ach.id === '22') currentProgress = mockTestsCompleted;
+
+        // Достижения за общий XP
+        if (ach.id === '23' || ach.id === '24' || ach.id === '25' || ach.id === '26' || ach.id === '27') currentProgress = totalXP;
+
+        // Достижения за уровень
+        if (ach.id === '28' || ach.id === '29' || ach.id === '30') currentProgress = level;
+
+        if (currentProgress >= (ach.maxProgress || 0)) {
+          shouldUnlock = true;
+        }
+
+        if (shouldUnlock) {
+          toast.success(`🏆 Достижение разблокировано: ${ach.title}!`, { duration: 5000 });
+          triggerConfetti();
+          playSound('achievement');
+          return { ...ach, unlocked: true, progress: currentProgress };
+        }
+
+        return { ...ach, progress: currentProgress };
+      });
+
+      return updated;
+    });
+  };
+
+  useEffect(() => {
+    checkAchievements();
+  }, [tasksCompleted, streak, subjects, webinarsWatched, mockTestsCompleted, totalXP, level]);
+
+  useEffect(() => {
+    const newLevel = Math.floor(totalXP / 500) + 1;
+    if (newLevel > level) {
+      setLevel(newLevel);
+      toast.success(`🎊 Новый уровень! Теперь ты ${newLevel} уровня!`, { duration: 4000 });
+      triggerConfetti();
+      playSound('achievement');
+    }
+  }, [totalXP]);
+
   const addXP = (amount: number, subjectName: string, activityName: string, activityType: 'webinar' | 'video' | 'task' | 'mock') => {
     setTotalXP(prev => prev + amount);
     setSubjects(prev => prev.map(s => 
