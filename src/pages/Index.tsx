@@ -31,6 +31,16 @@ interface Achievement {
   unlocked: boolean;
   progress?: number;
   maxProgress?: number;
+  reward?: string;
+}
+
+interface CollectionCard {
+  id: string;
+  name: string;
+  emoji: string;
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  description: string;
+  achievementId: string;
 }
 
 interface Subject {
@@ -67,37 +77,72 @@ const Index = () => {
   const [newTestScore, setNewTestScore] = useState('');
   const [newTestSubject, setNewTestSubject] = useState('Биология');
 
+  const [collectionCards] = useState<CollectionCard[]>([
+    { id: 'c1', name: 'Морская звезда', emoji: '⭐', rarity: 'common', description: 'Начало пути', achievementId: '1' },
+    { id: 'c2', name: 'Огненная медуза', emoji: '🔥', rarity: 'rare', description: 'Пылающий стрик', achievementId: '2' },
+    { id: 'c3', name: 'Королевский осьминог', emoji: '🐙', rarity: 'epic', description: 'Месяц силы', achievementId: '3' },
+    { id: 'c4', name: 'Рыба-клоун', emoji: '🐠', rarity: 'common', description: 'Первые шаги в биологии', achievementId: '4' },
+    { id: 'c5', name: 'Мудрый дельфин', emoji: '🐬', rarity: 'rare', description: 'Мастер биологии', achievementId: '5' },
+    { id: 'c6', name: 'Синий кит', emoji: '🐋', rarity: 'epic', description: 'Профессор биологии', achievementId: '6' },
+    { id: 'c7', name: 'Морской конёк', emoji: '🌊', rarity: 'common', description: 'Любитель русского', achievementId: '7' },
+    { id: 'c8', name: 'Золотая рыбка', emoji: '🐟', rarity: 'rare', description: 'Грамотей', achievementId: '8' },
+    { id: 'c9', name: 'Акула-молот', emoji: '🦈', rarity: 'epic', description: 'Знаток русского', achievementId: '9' },
+    { id: 'c10', name: 'Краб', emoji: '🦀', rarity: 'common', description: 'Начинающий химик', achievementId: '10' },
+    { id: 'c11', name: 'Омар', emoji: '🦞', rarity: 'rare', description: 'Химик-лаборант', achievementId: '11' },
+    { id: 'c12', name: 'Электрический скат', emoji: '⚡', rarity: 'epic', description: 'Профессор химии', achievementId: '12' },
+    { id: 'c13', name: 'Морской ёж', emoji: '🦔', rarity: 'common', description: 'Киноман', achievementId: '13' },
+    { id: 'c14', name: 'Морская черепаха', emoji: '🐢', rarity: 'rare', description: 'Марафонец', achievementId: '14' },
+    { id: 'c15', name: 'Нарвал', emoji: '🦄', rarity: 'epic', description: 'Киногуру', achievementId: '15' },
+    { id: 'c16', name: 'Креветка', emoji: '🦐', rarity: 'common', description: 'Новичок', achievementId: '16' },
+    { id: 'c17', name: 'Морской котик', emoji: '🦭', rarity: 'rare', description: 'Практик', achievementId: '17' },
+    { id: 'c18', name: 'Косатка', emoji: '🐋', rarity: 'epic', description: 'Мастер заданий', achievementId: '18' },
+    { id: 'c19', name: 'Золотой дракон', emoji: '🐉', rarity: 'legendary', description: 'Перфекционист', achievementId: '19' },
+    { id: 'c20', name: 'Летучая рыба', emoji: '🐠', rarity: 'rare', description: 'Испытание огнём', achievementId: '20' },
+    { id: 'c21', name: 'Меч-рыба', emoji: '🗡️', rarity: 'epic', description: 'Боец экзаменов', achievementId: '21' },
+    { id: 'c22', name: 'Морской император', emoji: '👑', rarity: 'legendary', description: 'Король пробников', achievementId: '22' },
+    { id: 'c23', name: 'Электрический угорь', emoji: '⚡', rarity: 'common', description: 'Энергия', achievementId: '23' },
+    { id: 'c24', name: 'Сияющий кальмар', emoji: '✨', rarity: 'rare', description: 'Звезда', achievementId: '24' },
+    { id: 'c25', name: 'Космическая медуза', emoji: '🌟', rarity: 'epic', description: 'Супернова', achievementId: '25' },
+    { id: 'c26', name: 'Ракета-рыба', emoji: '🚀', rarity: 'epic', description: 'Космонавт', achievementId: '26' },
+    { id: 'c27', name: 'Властелин океана', emoji: '🌌', rarity: 'legendary', description: 'Покоритель вселенной', achievementId: '27' },
+    { id: 'c28', name: 'Морская звезда', emoji: '📈', rarity: 'rare', description: 'Прогрессор', achievementId: '28' },
+    { id: 'c29', name: 'Древний краб', emoji: '🦀', rarity: 'epic', description: 'Ветеран', achievementId: '29' },
+    { id: 'c30', name: 'Посейдон', emoji: '🔱', rarity: 'legendary', description: 'Легенда', achievementId: '30' },
+  ]);
+
+  const [unlockedCards, setUnlockedCards] = useState<string[]>([]);
+
   const [achievements, setAchievements] = useState<Achievement[]>([
-    { id: '1', title: '🌟 Первый шаг', description: 'Выполни первое задание', icon: 'Sparkles', unlocked: false, progress: 0, maxProgress: 1 },
-    { id: '2', title: '🔥 Неделя силы', description: 'Занимайся 7 дней подряд', icon: 'Flame', unlocked: false, progress: 0, maxProgress: 7 },
-    { id: '3', title: '🌊 Месяц мощи', description: 'Занимайся 30 дней подряд', icon: 'Waves', unlocked: false, progress: 0, maxProgress: 30 },
-    { id: '4', title: '🧬 Юный биолог', description: 'Набери 100 XP по биологии', icon: 'Dna', unlocked: false, progress: 0, maxProgress: 100 },
-    { id: '5', title: '🔬 Мастер биологии', description: 'Набери 500 XP по биологии', icon: 'Microscope', unlocked: false, progress: 0, maxProgress: 500 },
-    { id: '6', title: '🌿 Профессор биологии', description: 'Набери 1000 XP по биологии', icon: 'TreeDeciduous', unlocked: false, progress: 0, maxProgress: 1000 },
-    { id: '7', title: '📖 Любитель русского', description: 'Набери 100 XP по русскому', icon: 'BookOpen', unlocked: false, progress: 0, maxProgress: 100 },
-    { id: '8', title: '✍️ Грамотей', description: 'Набери 500 XP по русскому', icon: 'PenTool', unlocked: false, progress: 0, maxProgress: 500 },
-    { id: '9', title: '📚 Знаток русского', description: 'Набери 1000 XP по русскому', icon: 'Library', unlocked: false, progress: 0, maxProgress: 1000 },
-    { id: '10', title: '⚗️ Начинающий химик', description: 'Набери 100 XP по химии', icon: 'FlaskConical', unlocked: false, progress: 0, maxProgress: 100 },
-    { id: '11', title: '🧪 Химик-лаборант', description: 'Набери 500 XP по химии', icon: 'FlaskRound', unlocked: false, progress: 0, maxProgress: 500 },
-    { id: '12', title: '⚛️ Профессор химии', description: 'Набери 1000 XP по химии', icon: 'Atom', unlocked: false, progress: 0, maxProgress: 1000 },
-    { id: '13', title: '🎬 Киноман', description: 'Посмотри 5 вебинаров', icon: 'Video', unlocked: false, progress: 0, maxProgress: 5 },
-    { id: '14', title: '📺 Марафонец', description: 'Посмотри 20 вебинаров', icon: 'Monitor', unlocked: false, progress: 0, maxProgress: 20 },
-    { id: '15', title: '🎥 Киногуру', description: 'Посмотри 50 вебинаров', icon: 'Film', unlocked: false, progress: 0, maxProgress: 50 },
-    { id: '16', title: '📝 Новичок', description: 'Реши 10 заданий', icon: 'FileText', unlocked: false, progress: 0, maxProgress: 10 },
-    { id: '17', title: '✅ Практик', description: 'Реши 50 заданий', icon: 'CheckSquare', unlocked: false, progress: 0, maxProgress: 50 },
-    { id: '18', title: '🎯 Мастер заданий', description: 'Реши 100 заданий', icon: 'Target', unlocked: false, progress: 0, maxProgress: 100 },
-    { id: '19', title: '💯 Перфекционист', description: 'Реши 200 заданий', icon: 'Award', unlocked: false, progress: 0, maxProgress: 200 },
-    { id: '20', title: '🎓 Испытание огнём', description: 'Реши 5 пробников', icon: 'GraduationCap', unlocked: false, progress: 0, maxProgress: 5 },
-    { id: '21', title: '🏆 Боец экзаменов', description: 'Реши 10 пробников', icon: 'Trophy', unlocked: false, progress: 0, maxProgress: 10 },
-    { id: '22', title: '👑 Король пробников', description: 'Реши 25 пробников', icon: 'Crown', unlocked: false, progress: 0, maxProgress: 25 },
-    { id: '23', title: '⚡ Энергия', description: 'Набери 100 общего XP', icon: 'Zap', unlocked: false, progress: 0, maxProgress: 100 },
-    { id: '24', title: '💫 Звезда', description: 'Набери 500 общего XP', icon: 'Star', unlocked: false, progress: 0, maxProgress: 500 },
-    { id: '25', title: '🌟 Супернова', description: 'Набери 1000 общего XP', icon: 'Sparkle', unlocked: false, progress: 0, maxProgress: 1000 },
-    { id: '26', title: '🚀 Космонавт', description: 'Набери 2500 общего XP', icon: 'Rocket', unlocked: false, progress: 0, maxProgress: 2500 },
-    { id: '27', title: '🌌 Покоритель вселенной', description: 'Набери 5000 общего XP', icon: 'Galaxy', unlocked: false, progress: 0, maxProgress: 5000 },
-    { id: '28', title: '📈 Прогрессор', description: 'Достигни 5 уровня', icon: 'TrendingUp', unlocked: false, progress: 0, maxProgress: 5 },
-    { id: '29', title: '🎖️ Ветеран', description: 'Достигни 10 уровня', icon: 'Medal', unlocked: false, progress: 0, maxProgress: 10 },
-    { id: '30', title: '🦸 Легенда', description: 'Достигни 20 уровня', icon: 'Swords', unlocked: false, progress: 0, maxProgress: 20 },
+    { id: '1', title: '🌟 Первый шаг', description: 'Выполни первое задание', icon: 'Sparkles', unlocked: false, progress: 0, maxProgress: 1, reward: 'Морская звезда' },
+    { id: '2', title: '🔥 Неделя силы', description: 'Занимайся 7 дней подряд', icon: 'Flame', unlocked: false, progress: 0, maxProgress: 7, reward: 'Огненная медуза' },
+    { id: '3', title: '🌊 Месяц мощи', description: 'Занимайся 30 дней подряд', icon: 'Waves', unlocked: false, progress: 0, maxProgress: 30, reward: 'Королевский осьминог' },
+    { id: '4', title: '🧬 Юный биолог', description: 'Набери 100 XP по биологии', icon: 'Dna', unlocked: false, progress: 0, maxProgress: 100, reward: 'Рыба-клоун' },
+    { id: '5', title: '🔬 Мастер биологии', description: 'Набери 500 XP по биологии', icon: 'Microscope', unlocked: false, progress: 0, maxProgress: 500, reward: 'Мудрый дельфин' },
+    { id: '6', title: '🌿 Профессор биологии', description: 'Набери 1000 XP по биологии', icon: 'TreeDeciduous', unlocked: false, progress: 0, maxProgress: 1000, reward: 'Синий кит' },
+    { id: '7', title: '📖 Любитель русского', description: 'Набери 100 XP по русскому', icon: 'BookOpen', unlocked: false, progress: 0, maxProgress: 100, reward: 'Морской конёк' },
+    { id: '8', title: '✍️ Грамотей', description: 'Набери 500 XP по русскому', icon: 'PenTool', unlocked: false, progress: 0, maxProgress: 500, reward: 'Золотая рыбка' },
+    { id: '9', title: '📚 Знаток русского', description: 'Набери 1000 XP по русскому', icon: 'Library', unlocked: false, progress: 0, maxProgress: 1000, reward: 'Акула-молот' },
+    { id: '10', title: '⚗️ Начинающий химик', description: 'Набери 100 XP по химии', icon: 'FlaskConical', unlocked: false, progress: 0, maxProgress: 100, reward: 'Краб' },
+    { id: '11', title: '🧪 Химик-лаборант', description: 'Набери 500 XP по химии', icon: 'FlaskRound', unlocked: false, progress: 0, maxProgress: 500, reward: 'Омар' },
+    { id: '12', title: '⚛️ Профессор химии', description: 'Набери 1000 XP по химии', icon: 'Atom', unlocked: false, progress: 0, maxProgress: 1000, reward: 'Электрический скат' },
+    { id: '13', title: '🎬 Киноман', description: 'Посмотри 5 вебинаров', icon: 'Video', unlocked: false, progress: 0, maxProgress: 5, reward: 'Морской ёж' },
+    { id: '14', title: '📺 Марафонец', description: 'Посмотри 20 вебинаров', icon: 'Monitor', unlocked: false, progress: 0, maxProgress: 20, reward: 'Морская черепаха' },
+    { id: '15', title: '🎥 Киногуру', description: 'Посмотри 50 вебинаров', icon: 'Film', unlocked: false, progress: 0, maxProgress: 50, reward: 'Нарвал' },
+    { id: '16', title: '📝 Новичок', description: 'Реши 10 заданий', icon: 'FileText', unlocked: false, progress: 0, maxProgress: 10, reward: 'Креветка' },
+    { id: '17', title: '✅ Практик', description: 'Реши 50 заданий', icon: 'CheckSquare', unlocked: false, progress: 0, maxProgress: 50, reward: 'Морской котик' },
+    { id: '18', title: '🎯 Мастер заданий', description: 'Реши 100 заданий', icon: 'Target', unlocked: false, progress: 0, maxProgress: 100, reward: 'Косатка' },
+    { id: '19', title: '💯 Перфекционист', description: 'Реши 200 заданий', icon: 'Award', unlocked: false, progress: 0, maxProgress: 200, reward: 'Золотой дракон' },
+    { id: '20', title: '🎓 Испытание огнём', description: 'Реши 5 пробников', icon: 'GraduationCap', unlocked: false, progress: 0, maxProgress: 5, reward: 'Летучая рыба' },
+    { id: '21', title: '🏆 Боец экзаменов', description: 'Реши 10 пробников', icon: 'Trophy', unlocked: false, progress: 0, maxProgress: 10, reward: 'Меч-рыба' },
+    { id: '22', title: '👑 Король пробников', description: 'Реши 25 пробников', icon: 'Crown', unlocked: false, progress: 0, maxProgress: 25, reward: 'Морской император' },
+    { id: '23', title: '⚡ Энергия', description: 'Набери 100 общего XP', icon: 'Zap', unlocked: false, progress: 0, maxProgress: 100, reward: 'Электрический угорь' },
+    { id: '24', title: '💫 Звезда', description: 'Набери 500 общего XP', icon: 'Star', unlocked: false, progress: 0, maxProgress: 500, reward: 'Сияющий кальмар' },
+    { id: '25', title: '🌟 Супернова', description: 'Набери 1000 общего XP', icon: 'Sparkle', unlocked: false, progress: 0, maxProgress: 1000, reward: 'Космическая медуза' },
+    { id: '26', title: '🚀 Космонавт', description: 'Набери 2500 общего XP', icon: 'Rocket', unlocked: false, progress: 0, maxProgress: 2500, reward: 'Ракета-рыба' },
+    { id: '27', title: '🌌 Покоритель вселенной', description: 'Набери 5000 общего XP', icon: 'Galaxy', unlocked: false, progress: 0, maxProgress: 5000, reward: 'Властелин океана' },
+    { id: '28', title: '📈 Прогрессор', description: 'Достигни 5 уровня', icon: 'TrendingUp', unlocked: false, progress: 0, maxProgress: 5, reward: 'Морская звезда' },
+    { id: '29', title: '🎖️ Ветеран', description: 'Достигни 10 уровня', icon: 'Medal', unlocked: false, progress: 0, maxProgress: 10, reward: 'Древний краб' },
+    { id: '30', title: '🦸 Легенда', description: 'Достигни 20 уровня', icon: 'Swords', unlocked: false, progress: 0, maxProgress: 20, reward: 'Посейдон' },
   ]);
 
   // Загрузка данных при монтировании компонента (сначала из облака, затем localStorage)
@@ -129,6 +174,7 @@ const Index = () => {
             setMockTestsCompleted(data.mockTestsCompleted);
             setMockTests(data.mockTests);
             setAchievements(data.achievements);
+            setUnlockedCards(data.unlockedCards || []);
             toast.success('Прогресс загружен из облака! ☁️', { duration: 2000 });
             return;
           }
@@ -152,6 +198,7 @@ const Index = () => {
           setMockTestsCompleted(parsed.mockTestsCompleted || 0);
           setMockTests(parsed.mockTests || []);
           setAchievements(parsed.achievements || achievements);
+          setUnlockedCards(parsed.unlockedCards || []);
           toast.success('Прогресс загружен! 🎉', { duration: 2000 });
         } catch (error) {
           console.error('Ошибка загрузки данных:', error);
@@ -175,6 +222,7 @@ const Index = () => {
       mockTestsCompleted,
       mockTests,
       achievements,
+      unlockedCards,
       lastSaved: new Date().toISOString(),
     };
     
@@ -200,7 +248,7 @@ const Index = () => {
     }, 2000); // Сохраняем через 2 секунды после последнего изменения
     
     return () => clearTimeout(saveToCloud);
-  }, [totalXP, level, streak, subjects, webinarsWatched, videosWatched, tasksCompleted, mockTestsCompleted, mockTests, achievements]);
+  }, [totalXP, level, streak, subjects, webinarsWatched, videosWatched, tasksCompleted, mockTestsCompleted, mockTests, achievements, unlockedCards]);
 
   const playSound = (type: 'success' | 'achievement') => {
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -285,7 +333,13 @@ const Index = () => {
         }
 
         if (shouldUnlock) {
-          toast.success(`🏆 Достижение разблокировано: ${ach.title}!`, { duration: 5000 });
+          const card = collectionCards.find(c => c.achievementId === ach.id);
+          if (card && !unlockedCards.includes(card.id)) {
+            setUnlockedCards(prev => [...prev, card.id]);
+            toast.success(`🏆 Достижение разблокировано: ${ach.title}!\n🎁 Получена карточка: ${card.emoji} ${card.name}!`, { duration: 6000 });
+          } else {
+            toast.success(`🏆 Достижение разблокировано: ${ach.title}!`, { duration: 5000 });
+          }
           triggerConfetti();
           playSound('achievement');
           return { ...ach, unlocked: true, progress: currentProgress };
@@ -514,7 +568,7 @@ const Index = () => {
         </Card>
 
         <Tabs defaultValue="actions" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-6 bg-white/20 backdrop-blur-lg">
+          <TabsList className="grid w-full grid-cols-6 mb-6 bg-white/20 backdrop-blur-lg">
             <TabsTrigger value="actions" className="data-[state=active]:bg-orange-500">
               <Icon name="Zap" size={16} className="mr-2" />
               Действия
@@ -530,6 +584,15 @@ const Index = () => {
             <TabsTrigger value="achievements" className="data-[state=active]:bg-orange-500">
               <Icon name="Award" size={16} className="mr-2" />
               Награды
+            </TabsTrigger>
+            <TabsTrigger value="collection" className="data-[state=active]:bg-orange-500 relative">
+              <Icon name="Gem" size={16} className="mr-2" />
+              Коллекция
+              {unlockedCards.length > 0 && (
+                <Badge className="absolute -top-1 -right-1 bg-yellow-400 text-black px-1.5 py-0.5 text-xs">
+                  {unlockedCards.length}
+                </Badge>
+              )}
             </TabsTrigger>
             <TabsTrigger value="stats" className="data-[state=active]:bg-orange-500">
               <Icon name="BarChart3" size={16} className="mr-2" />
@@ -622,34 +685,43 @@ const Index = () => {
                   key={achievement.id} 
                   className={`p-6 transition-all hover-scale ${
                     achievement.unlocked 
-                      ? 'bg-gradient-to-br from-yellow-400/30 to-orange-500/30 border-yellow-400/60 shadow-lg shadow-yellow-500/30' 
-                      : 'bg-white/10 border-white/30'
+                      ? 'bg-gradient-to-br from-yellow-400/40 to-orange-500/40 border-4 border-yellow-400 shadow-2xl shadow-yellow-500/50 scale-105' 
+                      : 'bg-white/10 border-white/30 opacity-70'
                   } backdrop-blur-lg`}
                 >
                   <div className="flex items-start gap-4">
-                    <div className={`p-3 rounded-lg shadow-lg transition-transform ${
+                    <div className={`p-4 rounded-lg shadow-lg transition-transform ${
                       achievement.unlocked 
-                        ? 'bg-gradient-to-br from-yellow-400 to-orange-500 animate-pulse' 
-                        : 'bg-gray-600'
-                    } hover:scale-110`}>
-                      <Icon name={achievement.icon as any} className="text-white" size={24} />
+                        ? 'bg-gradient-to-br from-yellow-300 to-orange-400 scale-110 shadow-xl' 
+                        : 'bg-gray-700/50'
+                    } hover:scale-125`}>
+                      <Icon name={achievement.icon as any} className={`${achievement.unlocked ? 'text-white' : 'text-gray-400'}`} size={28} />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-lg font-bold text-white">{achievement.title}</h3>
+                        <h3 className={`text-xl font-bold ${achievement.unlocked ? 'text-yellow-100 drop-shadow-lg' : 'text-white/60'}`}>
+                          {achievement.title}
+                        </h3>
                         {achievement.unlocked && (
-                          <Icon name="CheckCircle2" className="text-green-400" size={20} />
+                          <Badge className="bg-green-500 text-white animate-pulse">✓ Выполнено</Badge>
                         )}
                       </div>
-                      <p className="text-amber-100 text-sm mb-2">{achievement.description}</p>
+                      <p className={`text-sm mb-2 ${achievement.unlocked ? 'text-yellow-200' : 'text-white/50'}`}>
+                        {achievement.description}
+                      </p>
+                      {achievement.reward && (
+                        <p className={`text-sm font-semibold ${achievement.unlocked ? 'text-yellow-300' : 'text-white/40'}`}>
+                          🎁 Награда: {achievement.reward}
+                        </p>
+                      )}
                       {!achievement.unlocked && achievement.progress !== undefined && (
-                        <div className="space-y-1">
+                        <div className="space-y-1 mt-3">
                           <Progress 
                             value={(achievement.progress! / achievement.maxProgress!) * 100} 
-                            className="h-2" 
+                            className="h-3 bg-gray-700" 
                           />
-                          <p className="text-xs text-amber-100">
-                            {achievement.progress} / {achievement.maxProgress}
+                          <p className="text-sm text-white/70 font-semibold">
+                            Прогресс: {achievement.progress} / {achievement.maxProgress}
                           </p>
                         </div>
                       )}
@@ -775,6 +847,87 @@ const Index = () => {
                   </Card>
                 ))}
               </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="collection" className="animate-fade-in">
+            <Card className="p-6 bg-gradient-to-br from-purple-500/40 to-blue-500/40 backdrop-blur-xl border-purple-300/60 mb-6 shadow-2xl">
+              <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg flex items-center gap-2">
+                <Icon name="Gem" size={28} className="text-yellow-300" />
+                Морская коллекция
+              </h3>
+              <p className="text-white/90 mb-4">Собери всех морских обитателей за выполнение достижений!</p>
+              <div className="flex items-center gap-4">
+                <Progress value={(unlockedCards.length / collectionCards.length) * 100} className="h-4 flex-1" />
+                <p className="text-white font-bold text-lg">{unlockedCards.length}/{collectionCards.length}</p>
+              </div>
+            </Card>
+
+            <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+              {collectionCards.map(card => {
+                const isUnlocked = unlockedCards.includes(card.id);
+                const rarityColors = {
+                  common: 'from-gray-400/30 to-gray-500/30 border-gray-400/50',
+                  rare: 'from-blue-400/30 to-blue-600/30 border-blue-400/60',
+                  epic: 'from-purple-400/30 to-purple-600/30 border-purple-400/60',
+                  legendary: 'from-yellow-400/40 to-orange-500/40 border-yellow-400/80'
+                };
+                const rarityGlow = {
+                  common: 'shadow-gray-500/20',
+                  rare: 'shadow-blue-500/40',
+                  epic: 'shadow-purple-500/50',
+                  legendary: 'shadow-yellow-500/60'
+                };
+                const rarityText = {
+                  common: 'Обычная',
+                  rare: 'Редкая',
+                  epic: 'Эпическая',
+                  legendary: 'Легендарная'
+                };
+
+                return (
+                  <Card 
+                    key={card.id}
+                    className={`p-4 transition-all hover-scale ${
+                      isUnlocked 
+                        ? `bg-gradient-to-br ${rarityColors[card.rarity]} ${rarityGlow[card.rarity]} shadow-xl backdrop-blur-lg` 
+                        : 'bg-black/30 border-gray-600/50 backdrop-blur-lg opacity-40 grayscale'
+                    }`}
+                  >
+                    <div className="text-center">
+                      <div className={`text-6xl mb-3 ${isUnlocked ? 'animate-bounce' : 'blur-sm'}`}>
+                        {isUnlocked ? card.emoji : '❓'}
+                      </div>
+                      <h4 className={`font-bold mb-1 ${isUnlocked ? 'text-white text-lg' : 'text-gray-500 text-sm'}`}>
+                        {isUnlocked ? card.name : '???'}
+                      </h4>
+                      {isUnlocked && (
+                        <>
+                          <Badge className={`mb-2 ${
+                            card.rarity === 'legendary' ? 'bg-yellow-500' :
+                            card.rarity === 'epic' ? 'bg-purple-500' :
+                            card.rarity === 'rare' ? 'bg-blue-500' : 'bg-gray-500'
+                          } text-white`}>
+                            {rarityText[card.rarity]}
+                          </Badge>
+                          <p className="text-white/80 text-xs">{card.description}</p>
+                        </>
+                      )}
+                      {!isUnlocked && (
+                        <p className="text-gray-500 text-xs mt-2">Получи достижение</p>
+                      )}
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+
+            {unlockedCards.length === collectionCards.length && (
+              <Card className="p-8 bg-gradient-to-r from-yellow-400/50 to-orange-500/50 backdrop-blur-xl border-yellow-400 shadow-2xl mt-6 text-center">
+                <div className="text-6xl mb-4">🏆</div>
+                <h3 className="text-3xl font-bold text-white mb-2">Поздравляем!</h3>
+                <p className="text-white/90 text-lg">Ты собрал всю коллекцию морских обитателей!</p>
+              </Card>
             )}
           </TabsContent>
 
