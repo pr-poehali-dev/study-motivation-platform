@@ -335,11 +335,47 @@ const Index = () => {
       <div className="absolute top-1/3 left-20 text-6xl opacity-40 animate-swim" style={{ animationDelay: '0s', animationDuration: '5s' }}>🐢</div>
       <div className="absolute top-2/3 right-32 text-5xl opacity-40 animate-swim" style={{ animationDelay: '1s', animationDuration: '6s' }}>🐢</div>
 
-      {/* Морские обитатели */}
-      <div className="absolute bottom-20 left-10 text-7xl opacity-50 animate-float" style={{ animationDelay: '0.5s', zIndex: 5 }}>🐙</div>
-      <div className="absolute bottom-32 right-10 text-6xl opacity-50 animate-float" style={{ animationDelay: '1.5s', zIndex: 5 }}>🦑</div>
-      <div className="absolute bottom-40 left-[15%] text-5xl opacity-50 animate-float" style={{ animationDelay: '2.5s', zIndex: 5 }}>🐠</div>
-      <div className="absolute bottom-24 right-[15%] text-6xl opacity-50 animate-float" style={{ animationDelay: '3.5s', zIndex: 5 }}>🐟</div>
+      {/* Медузы (SVG) */}
+      <svg className="absolute bottom-20 left-10 opacity-50 animate-float" style={{ animationDelay: '0.5s', zIndex: 5 }} width="100" height="100" viewBox="0 0 100 100">
+        <ellipse cx="50" cy="35" rx="30" ry="25" fill="#E91E63" opacity="0.7"/>
+        <path d="M 30 50 Q 25 80 30 95" stroke="#E91E63" strokeWidth="3" fill="none" opacity="0.6"/>
+        <path d="M 40 50 Q 38 85 42 95" stroke="#E91E63" strokeWidth="3" fill="none" opacity="0.6"/>
+        <path d="M 50 50 Q 50 90 50 98" stroke="#E91E63" strokeWidth="3" fill="none" opacity="0.6"/>
+        <path d="M 60 50 Q 62 85 58 95" stroke="#E91E63" strokeWidth="3" fill="none" opacity="0.6"/>
+        <path d="M 70 50 Q 75 80 70 95" stroke="#E91E63" strokeWidth="3" fill="none" opacity="0.6"/>
+        <circle cx="42" cy="32" r="4" fill="white"/>
+        <circle cx="58" cy="32" r="4" fill="white"/>
+      </svg>
+      <svg className="absolute bottom-32 right-10 opacity-50 animate-float" style={{ animationDelay: '1.5s', zIndex: 5 }} width="90" height="90" viewBox="0 0 100 100">
+        <ellipse cx="50" cy="35" rx="28" ry="23" fill="#9C27B0" opacity="0.7"/>
+        <path d="M 32 50 Q 28 78 32 92" stroke="#9C27B0" strokeWidth="3" fill="none" opacity="0.6"/>
+        <path d="M 42 50 Q 40 83 44 92" stroke="#9C27B0" strokeWidth="3" fill="none" opacity="0.6"/>
+        <path d="M 50 50 Q 50 88 50 96" stroke="#9C27B0" strokeWidth="3" fill="none" opacity="0.6"/>
+        <path d="M 58 50 Q 60 83 56 92" stroke="#9C27B0" strokeWidth="3" fill="none" opacity="0.6"/>
+        <path d="M 68 50 Q 72 78 68 92" stroke="#9C27B0" strokeWidth="3" fill="none" opacity="0.6"/>
+        <circle cx="43" cy="32" r="3" fill="white"/>
+        <circle cx="57" cy="32" r="3" fill="white"/>
+      </svg>
+      <svg className="absolute bottom-40 left-[15%] opacity-50 animate-float" style={{ animationDelay: '2.5s', zIndex: 5 }} width="80" height="80" viewBox="0 0 100 100">
+        <ellipse cx="50" cy="35" rx="26" ry="21" fill="#FF5722" opacity="0.7"/>
+        <path d="M 33 50 Q 30 76 33 90" stroke="#FF5722" strokeWidth="2.5" fill="none" opacity="0.6"/>
+        <path d="M 43 50 Q 42 81 45 90" stroke="#FF5722" strokeWidth="2.5" fill="none" opacity="0.6"/>
+        <path d="M 50 50 Q 50 86 50 94" stroke="#FF5722" strokeWidth="2.5" fill="none" opacity="0.6"/>
+        <path d="M 57 50 Q 58 81 55 90" stroke="#FF5722" strokeWidth="2.5" fill="none" opacity="0.6"/>
+        <path d="M 67 50 Q 70 76 67 90" stroke="#FF5722" strokeWidth="2.5" fill="none" opacity="0.6"/>
+        <circle cx="44" cy="33" r="3" fill="white"/>
+        <circle cx="56" cy="33" r="3" fill="white"/>
+      </svg>
+      <svg className="absolute bottom-24 right-[15%] opacity-50 animate-float" style={{ animationDelay: '3.5s', zIndex: 5 }} width="90" height="90" viewBox="0 0 100 100">
+        <ellipse cx="50" cy="35" rx="28" ry="23" fill="#FF9800" opacity="0.7"/>
+        <path d="M 32 50 Q 29 77 32 91" stroke="#FF9800" strokeWidth="3" fill="none" opacity="0.6"/>
+        <path d="M 42 50 Q 41 82 45 91" stroke="#FF9800" strokeWidth="3" fill="none" opacity="0.6"/>
+        <path d="M 50 50 Q 50 87 50 95" stroke="#FF9800" strokeWidth="3" fill="none" opacity="0.6"/>
+        <path d="M 58 50 Q 59 82 55 91" stroke="#FF9800" strokeWidth="3" fill="none" opacity="0.6"/>
+        <path d="M 68 50 Q 71 77 68 91" stroke="#FF9800" strokeWidth="3" fill="none" opacity="0.6"/>
+        <circle cx="43" cy="32" r="3" fill="white"/>
+        <circle cx="57" cy="32" r="3" fill="white"/>
+      </svg>
 
       {/* Падающие разноцветные звёздочки */}
       {[...Array(12)].map((_, i) => {
