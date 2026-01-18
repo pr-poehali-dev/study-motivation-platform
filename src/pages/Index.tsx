@@ -335,11 +335,11 @@ const Index = () => {
       <div className="absolute top-1/3 left-20 text-6xl opacity-40 animate-swim" style={{ animationDelay: '0s', animationDuration: '5s' }}>🐢</div>
       <div className="absolute top-2/3 right-32 text-5xl opacity-40 animate-swim" style={{ animationDelay: '1s', animationDuration: '6s' }}>🐢</div>
 
-      {/* Медузы */}
-      <div className="absolute bottom-20 left-10 text-7xl opacity-50 animate-float" style={{ animationDelay: '0.5s', zIndex: 5 }}>🪼</div>
-      <div className="absolute bottom-32 right-10 text-6xl opacity-50 animate-float" style={{ animationDelay: '1.5s', zIndex: 5 }}>🪼</div>
-      <div className="absolute bottom-40 left-[15%] text-5xl opacity-50 animate-float" style={{ animationDelay: '2.5s', zIndex: 5 }}>🪼</div>
-      <div className="absolute bottom-24 right-[15%] text-6xl opacity-50 animate-float" style={{ animationDelay: '3.5s', zIndex: 5 }}>🪼</div>
+      {/* Морские обитатели */}
+      <div className="absolute bottom-20 left-10 text-7xl opacity-50 animate-float" style={{ animationDelay: '0.5s', zIndex: 5 }}>🐙</div>
+      <div className="absolute bottom-32 right-10 text-6xl opacity-50 animate-float" style={{ animationDelay: '1.5s', zIndex: 5 }}>🦑</div>
+      <div className="absolute bottom-40 left-[15%] text-5xl opacity-50 animate-float" style={{ animationDelay: '2.5s', zIndex: 5 }}>🐠</div>
+      <div className="absolute bottom-24 right-[15%] text-6xl opacity-50 animate-float" style={{ animationDelay: '3.5s', zIndex: 5 }}>🐟</div>
 
       {/* Падающие разноцветные звёздочки */}
       {[...Array(12)].map((_, i) => {
