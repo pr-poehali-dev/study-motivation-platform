@@ -10,6 +10,19 @@ import Icon from '@/components/ui/icon';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
 
+const STORAGE_KEY = 'study_motivation_progress';
+const API_URL = 'https://functions.poehali.dev/fde910e0-2b93-419a-a94b-d3d53ad2780a';
+
+// Генерация уникального ID пользователя
+const getUserId = () => {
+  let userId = localStorage.getItem('user_id');
+  if (!userId) {
+    userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('user_id', userId);
+  }
+  return userId;
+};
+
 interface Achievement {
   id: string;
   title: string;
@@ -86,6 +99,108 @@ const Index = () => {
     { id: '29', title: '🎖️ Ветеран', description: 'Достигни 10 уровня', icon: 'Medal', unlocked: false, progress: 0, maxProgress: 10 },
     { id: '30', title: '🦸 Легенда', description: 'Достигни 20 уровня', icon: 'Swords', unlocked: false, progress: 0, maxProgress: 20 },
   ]);
+
+  // Загрузка данных при монтировании компонента (сначала из облака, затем localStorage)
+  useEffect(() => {
+    const loadProgress = async () => {
+      const userId = getUserId();
+      
+      try {
+        // Попытка загрузить из облака
+        const response = await fetch(API_URL, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-User-Id': userId
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          if (data.totalXP !== undefined) {
+            setTotalXP(data.totalXP);
+            setLevel(data.level);
+            setStreak(data.streak);
+            setSubjects(data.subjects);
+            setWebinarsWatched(data.webinarsWatched);
+            setVideosWatched(data.videosWatched);
+            setTasksCompleted(data.tasksCompleted);
+            setMockTestsCompleted(data.mockTestsCompleted);
+            setMockTests(data.mockTests);
+            setAchievements(data.achievements);
+            toast.success('Прогресс загружен из облака! ☁️', { duration: 2000 });
+            return;
+          }
+        }
+      } catch (error) {
+        console.log('Не удалось загрузить из облака, пробую localStorage:', error);
+      }
+      
+      // Fallback на localStorage
+      const savedData = localStorage.getItem(STORAGE_KEY);
+      if (savedData) {
+        try {
+          const parsed = JSON.parse(savedData);
+          setTotalXP(parsed.totalXP || 0);
+          setLevel(parsed.level || 1);
+          setStreak(parsed.streak || 0);
+          setSubjects(parsed.subjects || subjects);
+          setWebinarsWatched(parsed.webinarsWatched || 0);
+          setVideosWatched(parsed.videosWatched || 0);
+          setTasksCompleted(parsed.tasksCompleted || 0);
+          setMockTestsCompleted(parsed.mockTestsCompleted || 0);
+          setMockTests(parsed.mockTests || []);
+          setAchievements(parsed.achievements || achievements);
+          toast.success('Прогресс загружен! 🎉', { duration: 2000 });
+        } catch (error) {
+          console.error('Ошибка загрузки данных:', error);
+        }
+      }
+    };
+    
+    loadProgress();
+  }, []);
+
+  // Автосохранение в localStorage и облако при любом изменении
+  useEffect(() => {
+    const dataToSave = {
+      totalXP,
+      level,
+      streak,
+      subjects,
+      webinarsWatched,
+      videosWatched,
+      tasksCompleted,
+      mockTestsCompleted,
+      mockTests,
+      achievements,
+      lastSaved: new Date().toISOString(),
+    };
+    
+    // Сохранение в localStorage (мгновенно)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+    
+    // Сохранение в облако (с debounce через setTimeout)
+    const saveToCloud = setTimeout(async () => {
+      const userId = getUserId();
+      
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-User-Id': userId
+          },
+          body: JSON.stringify(dataToSave)
+        });
+      } catch (error) {
+        console.error('Ошибка сохранения в облако:', error);
+      }
+    }, 2000); // Сохраняем через 2 секунды после последнего изменения
+    
+    return () => clearTimeout(saveToCloud);
+  }, [totalXP, level, streak, subjects, webinarsWatched, videosWatched, tasksCompleted, mockTestsCompleted, mockTests, achievements]);
 
   const playSound = (type: 'success' | 'achievement') => {
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();

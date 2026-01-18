@@ -1,0 +1,44 @@
+{
+  "tests": [
+    {
+      "name": "Test save progress",
+      "method": "POST",
+      "path": "/",
+      "headers": {
+        "X-User-Id": "test-user-123"
+      },
+      "body": {
+        "totalXP": 100,
+        "level": 2,
+        "streak": 5,
+        "subjects": [
+          {"name": "Биология", "color": "bg-orange-500", "icon": "Dna", "xp": 50, "level": 1}
+        ],
+        "webinarsWatched": 2,
+        "videosWatched": 3,
+        "tasksCompleted": 5,
+        "mockTestsCompleted": 1,
+        "mockTests": [],
+        "achievements": []
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "message": "string"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test load progress",
+      "method": "GET",
+      "path": "/",
+      "headers": {
+        "X-User-Id": "test-user-123"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "totalXP": "number"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
