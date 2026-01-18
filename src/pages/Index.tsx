@@ -26,22 +26,22 @@ interface Subject {
 }
 
 const Index = () => {
-  const [totalXP, setTotalXP] = useState(1250);
-  const [level, setLevel] = useState(5);
-  const [streak, setStreak] = useState(7);
+  const [totalXP, setTotalXP] = useState(0);
+  const [level, setLevel] = useState(1);
+  const [streak, setStreak] = useState(0);
   const [subjects, setSubjects] = useState<Subject[]>([
-    { name: 'Биология', color: 'bg-green-500', icon: 'Dna', xp: 420, level: 3 },
-    { name: 'Русский', color: 'bg-blue-500', icon: 'BookOpen', xp: 530, level: 4 },
-    { name: 'Химия', color: 'bg-purple-500', icon: 'FlaskConical', xp: 300, level: 2 },
+    { name: 'Биология', color: 'bg-green-500', icon: 'Dna', xp: 0, level: 1 },
+    { name: 'Русский', color: 'bg-blue-500', icon: 'BookOpen', xp: 0, level: 1 },
+    { name: 'Химия', color: 'bg-purple-500', icon: 'FlaskConical', xp: 0, level: 1 },
   ]);
 
   const [achievements, setAchievements] = useState<Achievement[]>([
-    { id: '1', title: 'Первые шаги', description: 'Выполни первое задание', icon: 'Star', unlocked: true },
-    { id: '2', title: 'Неделя силы', description: 'Занимайся 7 дней подряд', icon: 'Flame', unlocked: true },
-    { id: '3', title: 'Биолог', description: 'Набери 500 XP по биологии', icon: 'Dna', unlocked: false, progress: 420, maxProgress: 500 },
-    { id: '4', title: 'Марафонец', description: 'Посмотри 10 вебинаров', icon: 'Video', unlocked: false, progress: 6, maxProgress: 10 },
-    { id: '5', title: 'Практик', description: 'Реши 50 заданий', icon: 'Target', unlocked: false, progress: 23, maxProgress: 50 },
-    { id: '6', title: 'Знаток химии', description: 'Достигни 5 уровня по химии', icon: 'FlaskConical', unlocked: false, progress: 2, maxProgress: 5 },
+    { id: '1', title: 'Первые шаги', description: 'Выполни первое задание', icon: 'Star', unlocked: false, progress: 0, maxProgress: 1 },
+    { id: '2', title: 'Неделя силы', description: 'Занимайся 7 дней подряд', icon: 'Flame', unlocked: false, progress: 0, maxProgress: 7 },
+    { id: '3', title: 'Биолог', description: 'Набери 500 XP по биологии', icon: 'Dna', unlocked: false, progress: 0, maxProgress: 500 },
+    { id: '4', title: 'Марафонец', description: 'Посмотри 10 вебинаров', icon: 'Video', unlocked: false, progress: 0, maxProgress: 10 },
+    { id: '5', title: 'Практик', description: 'Реши 50 заданий', icon: 'Target', unlocked: false, progress: 0, maxProgress: 50 },
+    { id: '6', title: 'Знаток химии', description: 'Достигни 5 уровня по химии', icon: 'FlaskConical', unlocked: false, progress: 0, maxProgress: 5 },
   ]);
 
   const addXP = (amount: number, subjectName: string, activityName: string) => {
@@ -51,13 +51,21 @@ const Index = () => {
     ));
     
     const messages = [
-      `🎉 Отлично! +${amount} XP за ${activityName}!`,
-      `💪 Супер! Ты получил ${amount} XP!`,
-      `⭐ Великолепно! +${amount} опыта!`,
-      `🔥 Так держать! +${amount} XP в копилку!`,
+      `🎉 Ты крутышка! +${amount} XP за ${activityName}! Так держать!`,
+      `💪 Большая молодец! Ты получил ${amount} XP! Горжусь тобой!`,
+      `⭐ Вау, какая умница! +${amount} опыта! Ты супер!`,
+      `🔥 Ты невероятная! +${amount} XP в копилку! Продолжай в том же духе!`,
+      `✨ Потрясающе! Ещё ${amount} XP! Ты просто огонь!`,
+      `🌟 Браво! Так держать! +${amount} XP! Ты лучшая!`,
+      `🎊 Ура! Ты большая умничка! +${amount} опыта заслужила!`,
+      `💖 Я в тебя верю! +${amount} XP! Ты справляешься отлично!`,
+      `🚀 Вперёд к звёздам! +${amount} XP! Ты настоящая героиня!`,
+      `🏆 Чемпионка! +${amount} XP за твоё старание!`,
     ];
     
-    toast.success(messages[Math.floor(Math.random() * messages.length)]);
+    toast.success(messages[Math.floor(Math.random() * messages.length)], {
+      duration: 3000,
+    });
   };
 
   const levelProgress = ((totalXP % 500) / 500) * 100;
