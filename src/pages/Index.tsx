@@ -189,14 +189,17 @@ const Index = () => {
     const y = (rect.top + rect.height / 2) / window.innerHeight;
     
     confetti({
-      particleCount: 30,
-      spread: 60,
+      particleCount: 50,
+      spread: 70,
       origin: { x, y },
       colors: ['#fbbf24', '#f97316', '#ef4444', '#fde047', '#facc15', '#fb923c'],
-      ticks: 100,
-      gravity: 0.8,
-      scalar: 0.8
+      ticks: 150,
+      gravity: 1,
+      scalar: 1.2,
+      drift: 0
     });
+    
+    playSound('achievement');
   };
 
   const levelProgress = ((totalXP % 500) / 500) * 100;
@@ -225,22 +228,23 @@ const Index = () => {
       {/* Падающие разноцветные звёздочки */}
       {[...Array(12)].map((_, i) => {
         const colors = ['#fbbf24', '#f97316', '#ef4444', '#fde047', '#facc15', '#fb923c'];
-        const leftPos = Math.random() * 100;
-        const duration = 15 + Math.random() * 10;
-        const delay = Math.random() * 10;
-        const size = 32 + Math.random() * 32;
+        const positions = [8, 15, 23, 32, 41, 48, 56, 64, 71, 78, 85, 92];
+        const durations = [18, 22, 16, 20, 24, 19, 17, 21, 23, 19, 18, 20];
+        const delays = [0, 2, 4, 1, 3, 5, 2.5, 4.5, 1.5, 3.5, 0.5, 5.5];
+        const sizes = [40, 48, 36, 52, 44, 38, 50, 42, 46, 40, 54, 38];
         
         return (
           <div
             key={i}
-            className="absolute animate-fall-star cursor-pointer transition-transform hover:scale-150"
+            className="absolute animate-fall-star cursor-pointer transition-all hover:scale-150 hover:brightness-150"
             style={{
-              left: `${leftPos}%`,
+              left: `${positions[i]}%`,
               top: '-100px',
-              fontSize: `${size}px`,
-              filter: `drop-shadow(0 0 8px ${colors[i % colors.length]})`,
-              animationDuration: `${duration}s`,
-              animationDelay: `${delay}s`,
+              fontSize: `${sizes[i]}px`,
+              filter: `drop-shadow(0 0 10px ${colors[i % colors.length]})`,
+              animationDuration: `${durations[i]}s`,
+              animationDelay: `${delays[i]}s`,
+              zIndex: 20,
             }}
             onMouseEnter={handleStarHover}
           >
