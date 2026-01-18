@@ -336,9 +336,10 @@ const Index = () => {
       <div className="absolute top-2/3 right-32 text-5xl opacity-40 animate-swim" style={{ animationDelay: '1s', animationDuration: '6s' }}>🐢</div>
 
       {/* Медузы */}
-      <div className="absolute top-1/2 left-1/4 text-7xl opacity-30 animate-float" style={{ animationDelay: '0.5s' }}>🪼</div>
-      <div className="absolute top-1/4 right-1/4 text-6xl opacity-30 animate-float" style={{ animationDelay: '1.5s' }}>🪼</div>
-      <div className="absolute bottom-1/3 left-1/3 text-5xl opacity-30 animate-float" style={{ animationDelay: '2.5s' }}>🪼</div>
+      <div className="absolute top-1/2 left-1/4 text-7xl opacity-50 animate-float" style={{ animationDelay: '0.5s', zIndex: 5 }}>🪼</div>
+      <div className="absolute top-1/4 right-1/4 text-6xl opacity-50 animate-float" style={{ animationDelay: '1.5s', zIndex: 5 }}>🪼</div>
+      <div className="absolute bottom-1/3 left-1/3 text-5xl opacity-50 animate-float" style={{ animationDelay: '2.5s', zIndex: 5 }}>🪼</div>
+      <div className="absolute top-2/3 right-1/4 text-6xl opacity-50 animate-float" style={{ animationDelay: '3.5s', zIndex: 5 }}>🪼</div>
 
       {/* Падающие разноцветные звёздочки */}
       {[...Array(12)].map((_, i) => {
