@@ -141,19 +141,32 @@ const Index = () => {
   const nextLevelXP = (level * 500) - (totalXP % 500);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-purple-800">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-purple-800 relative overflow-hidden">
+      <div className="absolute top-20 left-10 text-8xl opacity-10 animate-float">📚</div>
+      <div className="absolute top-40 right-20 text-7xl opacity-10 animate-float" style={{ animationDelay: '1s' }}>✨</div>
+      <div className="absolute bottom-20 left-1/4 text-9xl opacity-10 animate-float" style={{ animationDelay: '2s' }}>🚀</div>
+      <div className="absolute bottom-40 right-1/3 text-8xl opacity-10 animate-rotate-slow">⭐</div>
       <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="mb-8 text-center animate-fade-in">
-          <h1 className="text-5xl font-bold text-white mb-2 font-['Montserrat']">
+        <div className="mb-8 text-center animate-fade-in relative">
+          <div className="absolute -top-10 left-1/2 -translate-x-1/2 text-6xl animate-pulse">
+            ⭐
+          </div>
+          <div className="absolute top-0 left-1/4 text-4xl animate-bounce" style={{ animationDelay: '0.2s' }}>
+            ✨
+          </div>
+          <div className="absolute top-0 right-1/4 text-4xl animate-bounce" style={{ animationDelay: '0.4s' }}>
+            💫
+          </div>
+          <h1 className="text-5xl font-bold text-white mb-2 font-['Montserrat'] relative z-10">
             Покоритель экзаменов 🚀
           </h1>
-          <p className="text-purple-200">Твой путь к успеху начинается здесь</p>
+          <p className="text-purple-200 relative z-10">Твой путь к успеху начинается здесь</p>
         </div>
 
-        <Card className="mb-8 p-6 bg-white/10 backdrop-blur-lg border-white/20 animate-scale-in">
+        <Card className="mb-8 p-6 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-purple-500/10 backdrop-blur-lg border-purple-500/30 animate-scale-in shadow-xl">
           <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-3xl font-bold text-white shadow-lg">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-3xl font-bold text-white shadow-lg hover:scale-110 transition-transform cursor-pointer animate-pulse">
                 {level}
               </div>
               <div>
@@ -205,9 +218,9 @@ const Index = () => {
           <TabsContent value="actions" className="animate-fade-in">
             <div className="grid gap-4 md:grid-cols-2">
               {subjects.map(subject => (
-                <Card key={subject.name} className="p-6 bg-white/10 backdrop-blur-lg border-white/20 hover-scale">
+                <Card key={subject.name} className="p-6 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border-white/20 hover-scale shadow-lg">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className={`${subject.color} p-3 rounded-lg shadow-lg`}>
+                    <div className={`${subject.color} p-3 rounded-lg shadow-lg hover:scale-110 transition-transform`}>
                       <Icon name={subject.icon as any} className="text-white" size={24} />
                     </div>
                     <div>
@@ -218,28 +231,28 @@ const Index = () => {
                   <div className="grid grid-cols-2 gap-2">
                     <Button 
                       onClick={() => addXP(50, subject.name, 'вебинар', 'webinar')}
-                      className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all"
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all hover:scale-105 hover:shadow-lg"
                     >
                       <Icon name="Video" size={16} className="mr-2" />
                       Вебинар +50
                     </Button>
                     <Button 
                       onClick={() => addXP(30, subject.name, 'задание', 'task')}
-                      className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 transition-all"
+                      className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 transition-all hover:scale-105 hover:shadow-lg"
                     >
                       <Icon name="FileText" size={16} className="mr-2" />
                       Задание +30
                     </Button>
                     <Button 
                       onClick={() => addXP(100, subject.name, 'пробник', 'mock')}
-                      className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition-all"
+                      className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition-all hover:scale-105 hover:shadow-lg"
                     >
                       <Icon name="Target" size={16} className="mr-2" />
                       Пробник +100
                     </Button>
                     <Button 
                       onClick={() => addXP(20, subject.name, 'видео', 'video')}
-                      className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 transition-all"
+                      className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 transition-all hover:scale-105 hover:shadow-lg"
                     >
                       <Icon name="Play" size={16} className="mr-2" />
                       Видео +20
@@ -255,15 +268,15 @@ const Index = () => {
               {subjects.map(subject => {
                 const subjectLevelProgress = ((subject.xp % 200) / 200) * 100;
                 return (
-                  <Card key={subject.name} className="p-6 bg-white/10 backdrop-blur-lg border-white/20">
+                  <Card key={subject.name} className="p-6 bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-lg border-white/20 hover-scale shadow-lg">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className={`${subject.color} p-3 rounded-lg shadow-lg`}>
+                      <div className={`${subject.color} p-3 rounded-lg shadow-lg hover:scale-110 transition-transform`}>
                         <Icon name={subject.icon as any} className="text-white" size={24} />
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between items-center mb-2">
                           <h3 className="text-xl font-bold text-white">{subject.name}</h3>
-                          <Badge className={`${subject.color} text-white`}>
+                          <Badge className={`${subject.color} text-white shadow-md hover:scale-105 transition-transform`}>
                             Уровень {subject.level}
                           </Badge>
                         </div>
@@ -287,16 +300,16 @@ const Index = () => {
                   key={achievement.id} 
                   className={`p-6 transition-all hover-scale ${
                     achievement.unlocked 
-                      ? 'bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-yellow-500/50' 
+                      ? 'bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-yellow-500/50 shadow-lg shadow-yellow-500/20' 
                       : 'bg-white/10 border-white/20'
                   } backdrop-blur-lg`}
                 >
                   <div className="flex items-start gap-4">
-                    <div className={`p-3 rounded-lg shadow-lg ${
+                    <div className={`p-3 rounded-lg shadow-lg transition-transform ${
                       achievement.unlocked 
-                        ? 'bg-gradient-to-br from-yellow-400 to-orange-400' 
+                        ? 'bg-gradient-to-br from-yellow-400 to-orange-400 animate-pulse' 
                         : 'bg-gray-600'
-                    }`}>
+                    } hover:scale-110`}>
                       <Icon name={achievement.icon as any} className="text-white" size={24} />
                     </div>
                     <div className="flex-1">
@@ -326,8 +339,11 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="mocks" className="animate-fade-in">
-            <Card className="p-6 bg-white/10 backdrop-blur-lg border-white/20 mb-6">
-              <h3 className="text-xl font-bold text-white mb-4">Записать новый пробник</h3>
+            <Card className="p-6 bg-gradient-to-br from-orange-500/10 to-red-500/10 backdrop-blur-lg border-orange-500/30 mb-6 hover-scale">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <Icon name="Target" size={24} className="text-orange-400" />
+                Записать новый пробник
+              </h3>
               <div className="grid gap-4 md:grid-cols-3">
                 <Select value={newTestSubject} onValueChange={setNewTestSubject}>
                   <SelectTrigger className="bg-white/10 border-white/20 text-white">
@@ -348,13 +364,65 @@ const Index = () => {
                 />
                 <Button 
                   onClick={addMockTest}
-                  className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                  className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 hover:scale-105 transition-all"
                 >
                   <Icon name="Plus" size={16} className="mr-2" />
                   Добавить
                 </Button>
               </div>
             </Card>
+
+            {mockTests.length > 0 && (
+              <Card className="p-6 bg-white/10 backdrop-blur-lg border-white/20 mb-6">
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                  <Icon name="TrendingUp" size={24} className="text-green-400" />
+                  График прогресса
+                </h3>
+                <div className="space-y-6">
+                  {subjects.map(subject => {
+                    const subjectTests = mockTests.filter(t => t.subject === subject.name);
+                    if (subjectTests.length === 0) return null;
+                    
+                    const avgScore = subjectTests.reduce((sum, t) => sum + t.score, 0) / subjectTests.length;
+                    const maxScore = Math.max(...subjectTests.map(t => t.score));
+                    const minScore = Math.min(...subjectTests.map(t => t.score));
+                    
+                    return (
+                      <div key={subject.name} className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className={`${subject.color} p-2 rounded-lg`}>
+                              <Icon name={subject.icon as any} className="text-white" size={16} />
+                            </div>
+                            <span className="text-white font-semibold">{subject.name}</span>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-white font-bold">Средний: {avgScore.toFixed(1)}</p>
+                            <p className="text-purple-200 text-xs">Мин: {minScore} • Макс: {maxScore}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-end gap-1 h-32 bg-white/5 rounded-lg p-3">
+                          {subjectTests.map((test, idx) => (
+                            <div key={test.id} className="flex-1 flex flex-col items-center gap-1 group">
+                              <div 
+                                className={`w-full ${subject.color} rounded-t transition-all hover:opacity-80 cursor-pointer`}
+                                style={{ height: `${(test.score / 100) * 100}%` }}
+                                title={`${test.score} баллов - ${test.date}`}
+                              />
+                              <span className="text-xs text-purple-200">{idx + 1}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex justify-between text-xs text-purple-300">
+                          <span>Попытка 1</span>
+                          <span>Попытка {subjectTests.length}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
+            )}
 
             {mockTests.length === 0 ? (
               <Card className="p-12 bg-white/10 backdrop-blur-lg border-white/20 text-center">
