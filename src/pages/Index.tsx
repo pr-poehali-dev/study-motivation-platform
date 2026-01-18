@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Icon from '@/components/ui/icon';
 import { toast } from 'sonner';
 
@@ -25,6 +27,14 @@ interface Subject {
   level: number;
 }
 
+interface MockTest {
+  id: string;
+  subject: string;
+  date: string;
+  score: number;
+  maxScore: number;
+}
+
 const Index = () => {
   const [totalXP, setTotalXP] = useState(0);
   const [level, setLevel] = useState(1);
@@ -34,6 +44,14 @@ const Index = () => {
     { name: 'Русский', color: 'bg-blue-500', icon: 'BookOpen', xp: 0, level: 1 },
     { name: 'Химия', color: 'bg-purple-500', icon: 'FlaskConical', xp: 0, level: 1 },
   ]);
+
+  const [webinarsWatched, setWebinarsWatched] = useState(0);
+  const [videosWatched, setVideosWatched] = useState(0);
+  const [tasksCompleted, setTasksCompleted] = useState(0);
+  const [mockTestsCompleted, setMockTestsCompleted] = useState(0);
+  const [mockTests, setMockTests] = useState<MockTest[]>([]);
+  const [newTestScore, setNewTestScore] = useState('');
+  const [newTestSubject, setNewTestSubject] = useState('Биология');
 
   const [achievements, setAchievements] = useState<Achievement[]>([
     { id: '1', title: '🌟 Первый шаг', description: 'Выполни первое задание', icon: 'Sparkles', unlocked: false, progress: 0, maxProgress: 1 },
@@ -68,11 +86,16 @@ const Index = () => {
     { id: '30', title: '🦸 Легенда', description: 'Достигни 20 уровня', icon: 'Swords', unlocked: false, progress: 0, maxProgress: 20 },
   ]);
 
-  const addXP = (amount: number, subjectName: string, activityName: string) => {
+  const addXP = (amount: number, subjectName: string, activityName: string, activityType: 'webinar' | 'video' | 'task' | 'mock') => {
     setTotalXP(prev => prev + amount);
     setSubjects(prev => prev.map(s => 
       s.name === subjectName ? { ...s, xp: s.xp + amount } : s
     ));
+
+    if (activityType === 'webinar') setWebinarsWatched(prev => prev + 1);
+    if (activityType === 'video') setVideosWatched(prev => prev + 1);
+    if (activityType === 'task') setTasksCompleted(prev => prev + 1);
+    if (activityType === 'mock') setMockTestsCompleted(prev => prev + 1);
     
     const messages = [
       `🎉 Ты крутышка! +${amount} XP за ${activityName}! Так держать!`,
@@ -88,6 +111,28 @@ const Index = () => {
     ];
     
     toast.success(messages[Math.floor(Math.random() * messages.length)], {
+      duration: 3000,
+    });
+  };
+
+  const addMockTest = () => {
+    if (!newTestScore || parseInt(newTestScore) < 0) return;
+    
+    const score = parseInt(newTestScore);
+    const maxScore = 100;
+    const newTest: MockTest = {
+      id: Date.now().toString(),
+      subject: newTestSubject,
+      date: new Date().toLocaleDateString('ru-RU'),
+      score,
+      maxScore,
+    };
+    
+    setMockTests(prev => [newTest, ...prev]);
+    addXP(100, newTestSubject, 'пробник', 'mock');
+    setNewTestScore('');
+    
+    toast.success(`Пробник записан! Результат: ${score}/${maxScore}`, {
       duration: 3000,
     });
   };
@@ -134,7 +179,7 @@ const Index = () => {
         </Card>
 
         <Tabs defaultValue="actions" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-6 bg-white/10 backdrop-blur-lg">
+          <TabsList className="grid w-full grid-cols-5 mb-6 bg-white/10 backdrop-blur-lg">
             <TabsTrigger value="actions" className="data-[state=active]:bg-purple-500">
               <Icon name="Zap" size={16} className="mr-2" />
               Действия
@@ -142,6 +187,10 @@ const Index = () => {
             <TabsTrigger value="progress" className="data-[state=active]:bg-purple-500">
               <Icon name="TrendingUp" size={16} className="mr-2" />
               Прогресс
+            </TabsTrigger>
+            <TabsTrigger value="mocks" className="data-[state=active]:bg-purple-500">
+              <Icon name="Target" size={16} className="mr-2" />
+              Пробники
             </TabsTrigger>
             <TabsTrigger value="achievements" className="data-[state=active]:bg-purple-500">
               <Icon name="Award" size={16} className="mr-2" />
@@ -168,28 +217,28 @@ const Index = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <Button 
-                      onClick={() => addXP(50, subject.name, 'вебинар')}
+                      onClick={() => addXP(50, subject.name, 'вебинар', 'webinar')}
                       className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all"
                     >
                       <Icon name="Video" size={16} className="mr-2" />
                       Вебинар +50
                     </Button>
                     <Button 
-                      onClick={() => addXP(30, subject.name, 'задание')}
+                      onClick={() => addXP(30, subject.name, 'задание', 'task')}
                       className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 transition-all"
                     >
                       <Icon name="FileText" size={16} className="mr-2" />
                       Задание +30
                     </Button>
                     <Button 
-                      onClick={() => addXP(100, subject.name, 'пробник')}
+                      onClick={() => addXP(100, subject.name, 'пробник', 'mock')}
                       className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition-all"
                     >
                       <Icon name="Target" size={16} className="mr-2" />
                       Пробник +100
                     </Button>
                     <Button 
-                      onClick={() => addXP(20, subject.name, 'видео')}
+                      onClick={() => addXP(20, subject.name, 'видео', 'video')}
                       className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 transition-all"
                     >
                       <Icon name="Play" size={16} className="mr-2" />
@@ -276,6 +325,69 @@ const Index = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="mocks" className="animate-fade-in">
+            <Card className="p-6 bg-white/10 backdrop-blur-lg border-white/20 mb-6">
+              <h3 className="text-xl font-bold text-white mb-4">Записать новый пробник</h3>
+              <div className="grid gap-4 md:grid-cols-3">
+                <Select value={newTestSubject} onValueChange={setNewTestSubject}>
+                  <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Биология">Биология</SelectItem>
+                    <SelectItem value="Русский">Русский</SelectItem>
+                    <SelectItem value="Химия">Химия</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Input 
+                  type="number"
+                  placeholder="Балл (из 100)"
+                  value={newTestScore}
+                  onChange={(e) => setNewTestScore(e.target.value)}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-purple-300"
+                />
+                <Button 
+                  onClick={addMockTest}
+                  className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                >
+                  <Icon name="Plus" size={16} className="mr-2" />
+                  Добавить
+                </Button>
+              </div>
+            </Card>
+
+            {mockTests.length === 0 ? (
+              <Card className="p-12 bg-white/10 backdrop-blur-lg border-white/20 text-center">
+                <Icon name="Target" size={48} className="text-purple-300 mx-auto mb-4" />
+                <p className="text-lg text-purple-200">Пока нет записанных пробников</p>
+                <p className="text-sm text-purple-300 mt-2">Добавь свой первый результат!</p>
+              </Card>
+            ) : (
+              <div className="grid gap-4">
+                {mockTests.map((test) => (
+                  <Card key={test.id} className="p-6 bg-white/10 backdrop-blur-lg border-white/20 hover-scale">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className={`${subjects.find(s => s.name === test.subject)?.color} p-3 rounded-lg shadow-lg`}>
+                          <Icon name={subjects.find(s => s.name === test.subject)?.icon as any} className="text-white" size={24} />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-white">{test.subject}</h3>
+                          <p className="text-purple-200 text-sm">{test.date}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-4xl font-bold text-white font-['Rubik']">{test.score}</p>
+                        <p className="text-purple-200 text-sm">из {test.maxScore}</p>
+                        <Progress value={(test.score / test.maxScore) * 100} className="h-2 mt-2 w-24" />
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
           <TabsContent value="stats" className="animate-fade-in">
             <div className="grid gap-6 md:grid-cols-3">
               <Card className="p-6 bg-white/10 backdrop-blur-lg border-white/20 hover-scale">
@@ -307,7 +419,43 @@ const Index = () => {
                 <p className="text-purple-200 text-sm">получено наград</p>
               </Card>
 
-              <Card className="p-6 bg-white/10 backdrop-blur-lg border-white/20 md:col-span-3">
+              <Card className="p-6 bg-white/10 backdrop-blur-lg border-white/20 hover-scale">
+                <div className="flex items-center gap-3 mb-2">
+                  <Icon name="Video" className="text-purple-400" size={24} />
+                  <h3 className="text-lg font-semibold text-white">Вебинары</h3>
+                </div>
+                <p className="text-4xl font-bold text-white font-['Rubik']">{webinarsWatched}</p>
+                <p className="text-purple-200 text-sm">просмотрено</p>
+              </Card>
+
+              <Card className="p-6 bg-white/10 backdrop-blur-lg border-white/20 hover-scale">
+                <div className="flex items-center gap-3 mb-2">
+                  <Icon name="Play" className="text-green-400" size={24} />
+                  <h3 className="text-lg font-semibold text-white">Видео</h3>
+                </div>
+                <p className="text-4xl font-bold text-white font-['Rubik']">{videosWatched}</p>
+                <p className="text-purple-200 text-sm">просмотрено</p>
+              </Card>
+
+              <Card className="p-6 bg-white/10 backdrop-blur-lg border-white/20 hover-scale">
+                <div className="flex items-center gap-3 mb-2">
+                  <Icon name="CheckSquare" className="text-blue-400" size={24} />
+                  <h3 className="text-lg font-semibold text-white">Задания</h3>
+                </div>
+                <p className="text-4xl font-bold text-white font-['Rubik']">{tasksCompleted}</p>
+                <p className="text-purple-200 text-sm">выполнено</p>
+              </Card>
+
+              <Card className="p-6 bg-white/10 backdrop-blur-lg border-white/20 hover-scale">
+                <div className="flex items-center gap-3 mb-2">
+                  <Icon name="Target" className="text-orange-400" size={24} />
+                  <h3 className="text-lg font-semibold text-white">Пробники</h3>
+                </div>
+                <p className="text-4xl font-bold text-white font-['Rubik']">{mockTestsCompleted}</p>
+                <p className="text-purple-200 text-sm">решено</p>
+              </Card>
+
+              <Card className="p-6 bg-white/10 backdrop-blur-lg border-white/20 md:col-span-2">
                 <h3 className="text-lg font-semibold text-white mb-4">Распределение по предметам</h3>
                 <div className="space-y-3">
                   {subjects.map(subject => (
@@ -317,7 +465,7 @@ const Index = () => {
                         <span className="text-purple-200">{subject.xp} XP</span>
                       </div>
                       <Progress 
-                        value={(subject.xp / totalXP) * 100} 
+                        value={totalXP > 0 ? (subject.xp / totalXP) * 100 : 0} 
                         className="h-2"
                       />
                     </div>
