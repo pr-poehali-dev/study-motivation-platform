@@ -257,27 +257,27 @@ const Index = () => {
           <p className="text-amber-100">Твой путь к успеху начинается здесь</p>
         </div>
 
-        <Card className="mb-8 p-6 bg-gradient-to-r from-yellow-400/20 via-orange-400/20 to-red-400/20 backdrop-blur-lg border-yellow-400/40 animate-scale-in shadow-2xl">
+        <Card className="mb-8 p-6 bg-gradient-to-r from-yellow-400/40 via-orange-400/40 to-red-400/40 backdrop-blur-xl border-yellow-300/60 animate-scale-in shadow-2xl">
           <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-3xl font-bold text-white shadow-lg hover:scale-110 transition-transform cursor-pointer animate-pulse">
+              <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-3xl font-bold text-white shadow-xl border-4 border-white/30 hover:scale-110 transition-transform cursor-pointer animate-pulse">
                 {level}
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-white">Уровень {level}</h2>
-                <p className="text-amber-100">Всего опыта: {totalXP} XP</p>
+                <h2 className="text-2xl font-bold text-white drop-shadow-lg">Уровень {level}</h2>
+                <p className="text-white font-semibold drop-shadow">Всего опыта: {totalXP} XP</p>
               </div>
             </div>
             <div className="text-right">
               <div className="flex items-center gap-2 mb-2">
-                <Icon name="Flame" className="text-orange-300" size={24} />
-                <span className="text-2xl font-bold text-white">{streak}</span>
-                <span className="text-amber-100">дней подряд</span>
+                <Icon name="Flame" className="text-yellow-300" size={24} />
+                <span className="text-2xl font-bold text-white drop-shadow-lg">{streak}</span>
+                <span className="text-white font-semibold drop-shadow">дней подряд</span>
               </div>
             </div>
           </div>
           <div className="space-y-2">
-            <div className="flex justify-between text-sm text-amber-100">
+            <div className="flex justify-between text-sm text-white font-semibold drop-shadow">
               <span>До следующего уровня</span>
               <span>{nextLevelXP} XP</span>
             </div>
@@ -433,14 +433,14 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="mocks" className="animate-fade-in">
-            <Card className="p-6 bg-gradient-to-br from-orange-500/20 to-red-500/20 backdrop-blur-lg border-orange-400/40 mb-6 hover-scale">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <Icon name="Target" size={24} className="text-orange-300" />
+            <Card className="p-6 bg-gradient-to-br from-orange-500/40 to-red-500/40 backdrop-blur-xl border-orange-300/60 mb-6 hover-scale shadow-xl">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2 drop-shadow-lg">
+                <Icon name="Target" size={24} className="text-yellow-300" />
                 Записать новый пробник
               </h3>
               <div className="grid gap-4 md:grid-cols-3">
                 <Select value={newTestSubject} onValueChange={setNewTestSubject}>
-                  <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                  <SelectTrigger className="bg-white/20 border-white/40 text-white font-semibold">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -454,7 +454,7 @@ const Index = () => {
                   placeholder="Балл (из 100)"
                   value={newTestScore}
                   onChange={(e) => setNewTestScore(e.target.value)}
-                  className="bg-white/10 border-white/30 text-white placeholder:text-amber-200"
+                  className="bg-white/20 border-white/40 text-white font-semibold placeholder:text-white/70"
                 />
                 <Button 
                   onClick={addMockTest}
@@ -467,9 +467,9 @@ const Index = () => {
             </Card>
 
             {mockTests.length > 0 && (
-              <Card className="p-6 bg-white/10 backdrop-blur-lg border-white/30 mb-6">
-                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                  <Icon name="TrendingUp" size={24} className="text-green-400" />
+              <Card className="p-6 bg-white/20 backdrop-blur-xl border-white/40 mb-6 shadow-xl">
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2 drop-shadow-lg">
+                  <Icon name="TrendingUp" size={24} className="text-yellow-300" />
                   График прогресса
                 </h3>
                 <div className="space-y-6">
@@ -491,8 +491,8 @@ const Index = () => {
                             <span className="text-white font-semibold">{subject.name}</span>
                           </div>
                           <div className="text-right">
-                            <p className="text-white font-bold">Средний: {avgScore.toFixed(1)}</p>
-                            <p className="text-amber-100 text-xs">Мин: {minScore} • Макс: {maxScore}</p>
+                            <p className="text-white font-bold drop-shadow">Средний: {avgScore.toFixed(1)}</p>
+                            <p className="text-white text-xs drop-shadow">Мин: {minScore} • Макс: {maxScore}</p>
                           </div>
                         </div>
                         <div className="flex items-end gap-1 h-32 bg-white/5 rounded-lg p-3">
@@ -503,11 +503,11 @@ const Index = () => {
                                 style={{ height: `${(test.score / 100) * 100}%` }}
                                 title={`${test.score} баллов - ${test.date}`}
                               />
-                              <span className="text-xs text-amber-100">{idx + 1}</span>
+                              <span className="text-xs text-white font-semibold drop-shadow">{idx + 1}</span>
                             </div>
                           ))}
                         </div>
-                        <div className="flex justify-between text-xs text-amber-200">
+                        <div className="flex justify-between text-xs text-white font-semibold drop-shadow">
                           <span>Попытка 1</span>
                           <span>Попытка {subjectTests.length}</span>
                         </div>
@@ -519,28 +519,28 @@ const Index = () => {
             )}
 
             {mockTests.length === 0 ? (
-              <Card className="p-12 bg-white/10 backdrop-blur-lg border-white/30 text-center">
-                <Icon name="Target" size={48} className="text-amber-200 mx-auto mb-4" />
-                <p className="text-lg text-white">Пока нет записанных пробников</p>
-                <p className="text-sm text-amber-100 mt-2">Добавь свой первый результат!</p>
+              <Card className="p-12 bg-white/20 backdrop-blur-xl border-white/40 text-center shadow-xl">
+                <Icon name="Target" size={48} className="text-white mx-auto mb-4" />
+                <p className="text-lg text-white font-bold drop-shadow-lg">Пока нет записанных пробников</p>
+                <p className="text-sm text-white mt-2 drop-shadow">Добавь свой первый результат!</p>
               </Card>
             ) : (
               <div className="grid gap-4">
                 {mockTests.map((test) => (
-                  <Card key={test.id} className="p-6 bg-white/10 backdrop-blur-lg border-white/30 hover-scale">
+                  <Card key={test.id} className="p-6 bg-white/20 backdrop-blur-xl border-white/40 hover-scale shadow-xl">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         <div className={`${subjects.find(s => s.name === test.subject)?.color} p-3 rounded-lg shadow-lg`}>
                           <Icon name={subjects.find(s => s.name === test.subject)?.icon as any} className="text-white" size={24} />
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold text-white">{test.subject}</h3>
-                          <p className="text-amber-100 text-sm">{test.date}</p>
+                          <h3 className="text-xl font-bold text-white drop-shadow-lg">{test.subject}</h3>
+                          <p className="text-white text-sm drop-shadow">{test.date}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-4xl font-bold text-white font-['Rubik']">{test.score}</p>
-                        <p className="text-amber-100 text-sm">из {test.maxScore}</p>
+                        <p className="text-4xl font-bold text-white font-['Rubik'] drop-shadow-lg">{test.score}</p>
+                        <p className="text-white text-sm drop-shadow">из {test.maxScore}</p>
                         <Progress value={(test.score / test.maxScore) * 100} className="h-2 mt-2 w-24" />
                       </div>
                     </div>
